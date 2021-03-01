@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block header %}
+    <div class="listright">
+        <i class="fas fa-home"></i><a href="{{url_for("index")}}">
+        <li>صفحه اصلی</li>
+    </a>
+    </div>
+    <div class="listleft">
+        <i class="fas fa-sign-out-alt"></i><a href="{{url_for('logout')}}">خروج</a>
+    </div>
+{% endblock %}
+{% block content %}
+    <form method="POST" class="edit-profile" enctype="multipart/form-data" action="">
+        {{ form.hidden_tag() }}
+        {% for error in form.firstname.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+        {% for error in form.lastname.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+        {% for error in form.picture.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+        {% for error in form.password.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+        <div class="edit-profile-input">
+            <label for="first-name">نام:</label>
+            {{ form.firstname }}
+        </div>
+        <div class="edit-profile-input">
+            <label for="last-name">نام خانوادگی:</label>
+            {{ form.lastname }}
+        </div>
+        <div class="edit-profile-input">
+            <label for="email">ایمیل:</label>
+            {{form.email(readonly=True)}}
+        </div>
+        <div class="edit-profile-input">
+            <label for="profile-photo">آپلود عکس پروفایل:</label>
+            {{ form.picture }}
+        </div>
+        <div class="edit-profile-input">
+            <label title="پسورد خود را برای ثبت تغییرات وارد کنید." for="password">پسورد شما:</label>
+            {{form.password}}
+        </div>
+        <div class="edit-profile-submit">
+            {{form.submit}}
+        </div>
+    </form>
+    {% if current_user.verify==False %}
+        <form action="" method="POST">
+            {{ sendmail.hidden_tag() }}
+            {{ sendmail.hidden }}
+            <div class="edit-profile-submit">
+                {{ sendmail.sendemail(class_="send-email-input") }}
+            </div>
+        </form>
+    {% endif %}
+
+{% endblock %}

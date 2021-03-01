@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+{% block header %}
+    <div class="listright">
+        <i class="fas fa-home"></i><a href="#">
+        <li>صفحه اصلی</li>
+    </a>
+        <i class="fas fa-user"></i><a href="#">
+        <li>پروفایل کاربری</li>
+    </a>
+    </div>
+    <div class="logo" id="logo-in-active-page">
+        logoman
+    </div>
+    <div class="listleft">
+        <img src="../static/images/39348396.png" alt="">
+        <p>علی ضابط پور</p>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="showingusername">
+        <p>username</p>
+    </div>
+    <form class="form-todo" action="">
+        <div class="form-todo-up">
+            <input class="font-parastoo" placeholder="عنوان" type="text">
+            <input type="date">
+            <input id="timeinput" type="time">
+        </div>
+        <div class="form-todo-down">
+            <input class="font-parastoo" value="افزودن" type="submit">
+        </div>
+    </form>
+    <div class="show-todo-list-active">
+        <ul class="ul-todo-section">
+            <li class="todo-section">
+                <div class="todo-section-upside">
+                    <p class="show-todo-date">1398/02/13</p>
+                    <p class="show-todo-time">13:31</p>
+                </div>
+                <div class="todo-section-downside">
+                    <div class="edit-delete-todo">
+                        <a href="#">
+                            <button class="edit-button-todo font-english">edit</button>
+                        </a>
+                        <a href="#">
+                            <button class="delete-button-todo font-english">delete</button>
+                        </a>
+                    </div>
+                    <div class="todo-subject">
+                        <h4 class="font-parastoo">سلام چطوری خوبی ادامه میدم بببینم چی میشهسی</h4>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="checkbox-todo">
+                    </div>
+                </div>
+            </li>
+            <li class="todo-section">
+                <div class="todo-section-upside">
+                    <p class="show-todo-date">1398/02/14</p>
+                    <p class="show-todo-time">14:41</p>
+                </div>
+                <div class="todo-section-downside">
+                    <div>
+                        <button class="edit-button-todo font-english">edit</button>
+                        <button class="delete-button-todo font-english">delete</button>
+                    </div>
+                    <div>
+                        <h4 class="font-parastoo">2عنوان</h4>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="" id="">
+                    </div>
+                </div>
+            </li>
+            <li class="todo-section">
+                <div class="todo-section-upside">
+                    <p class="show-todo-date">1398/02/15</p>
+                    <p class="show-todo-time">15:51</p>
+                </div>
+                <div class="todo-section-downside">
+                    <div>
+                        <button class="edit-button-todo font-english">edit</button>
+                        <button class="delete-button-todo font-english">delete</button>
+                    </div>
+                    <div>
+                        <h4 class="font-parastoo">3عنوان</h4>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="" id="">
+                    </div>
+                </div>
+            </li>
+            <li class="todo-section">
+                <div class="todo-section-upside">
+                    <p class="show-todo-date">1398/02/15</p>
+                    <p class="show-todo-time">15:51</p>
+                </div>
+                <div class="todo-section-downside">
+                    <div>
+                        <button class="edit-button-todo font-english">edit</button>
+                        <button class="delete-button-todo font-english">delete</button>
+                    </div>
+                    <div>
+                        <h4 class="font-parastoo">3عنوان</h4>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="" id="">
+                    </div>
+                </div>
+            </li>
+            <li class="todo-section">
+                <div class="todo-section-upside">
+                    <p class="show-todo-date">1398/02/15</p>
+                    <p class="show-todo-time">15:51</p>
+                </div>
+                <div class="todo-section-downside">
+                    <div>
+                        <button class="edit-button-todo font-english">edit</button>
+                        <button class="delete-button-todo font-english">delete</button>
+                    </div>
+                    <div>
+                        <h4 class="font-parastoo">3عنوان</h4>
+                    </div>
+                    <div>
+                        <input class="checkbox-todo" type="checkbox" name="" id="">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="switch-page">
+            <ul>
+                <li>
+                    <button>1</button>
+                </li>
+                <li>
+                    <button>2</button>
+                </li>
+                <li>
+                    <button>3</button>
+                </li>
+                <li>
+                    <button>4</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

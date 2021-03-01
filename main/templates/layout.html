@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='css/main.css') }}">
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='css/all.css') }}">
+
+	<title>{{ title }}</title>
+</head>
+<body onload="loadingpage();">
+
+	<div class="main">
+        {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <div class="flash-message-{{ category }}">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block lrform %}
+        {% endblock lrform %}
+		<div class="content">
+			<div class="header">
+				<nav>
+					<ul>
+                        {% block header %}
+                        {% endblock header %}
+					</ul>
+				</nav>
+			</div>
+            {% if current_user.verify==False %}
+                <div class="confrim-email">
+                    <p>لطفا ایمیل خود را تایید کنید</p>
+                </div>
+            {% endif %}
+			<div class="container">
+                {% block content %}
+                {% endblock content %}
+			</div>
+		</div>
+	</div>
+    {% if "editpost" not in request.path %}
+        <script src="{{ url_for('static',filename='js/main.js') }}"></script>
+    {% endif %} 
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+{% extends "layout.html" %}
+{% block header %}
+    {% if current_user.is_authenticated %}
+        <div class="listright">
+            <i class="fas fa-home"></i><a href="{{ url_for("index") }}">
+            <li>صفحه اصلی</li>
+        </a>
+            <i class="fas fa-user"></i><a href="{{ url_for("editprofile") }}">
+            <li>پروفایل کاربری</li>
+        </a>
+        </div>
+        <div class="logo" id="logo-in-active-page">
+            logoman
+        </div>
+        <div class="listleft">
+            <img src="{{ url_for('static',filename="images/"+current_user.profile_image) }}" alt="">
+            <p class="font-english">{{current_user.firstname+" "+current_user.lastname}}</p>
+             <i class="fas fa-sign-out-alt"></i><a href="{{url_for('logout')}}">خروج</a>
+        </div>
+    {% else %}
+        {% block lrform %}
+            <div class="dark" onclick="closedark(this)"></div>
+            <div id="login" class="login-popup">
+                <form method="POST" action="">
+                    {{ lform.hidden_tag() }}
+                    <h2 class="font-english">login</h2>
+                    {% for error in lform.lemail.errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    {% for error in lform.lpassword.errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    <div class="login-div">
+                        {{ lform.lemail(class_="font-english") }}<i class="fa fa-envelope icon-email-login icon"></i>
+                    </div>
+                    <div class="login-div">
+                        {{ lform.lpassword(class_="font-english") }}<i class="fa fa-key icon-password-login icon"></i>
+                    </div>
+                    {{ lform.lsubmit(class_="login-button-submit font-english") }}
+                    <input onclick="closepopup()" class="login-button-close font-english" type="button" value="close">
+                </form>
+            </div>
+            <div class="register-popup">
+                <form method="POST" action="">
+                    {{ rform.hidden_tag() }}
+                    <h2 class="font-english">register</h2>
+                    {% for error in rform.firstname.errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    {% for error in rform.lastname.errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    {% for error in rform.remail.errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    {% for error in rform.confrim_password.errors %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    <div class="register-div">
+                        {{ rform.firstname(class_="font-english") }}<i class="fas fa-user icon-user-register icon"></i>
+                    </div>
+                    <div class="register-div">
+                        {{ rform.lastname(class_="font-english") }}<i class="fas fa-user icon-user-register icon"></i>
+                    </div>
+                    <div class="register-div">
+                        {{ rform.remail(class_="font-english") }}<i class="fa fa-envelope icon-email-register icon"></i>
+                    </div>
+                    <div class="register-div">
+                        {{ rform.rpassword(class_="font-english") }}<i
+                            class="fa fa-key icon-password-register1 icon"></i>
+                    </div>
+                    <div class="register-div">
+                        {{ rform.confrim_password(class_="font-english") }}<i
+                            class="fa fa-key icon-password-register2 icon"></i>
+                    </div>
+                    {{ rform.rsubmit(class_="login-button-submit font-english") }}
+                    <input onclick="closepopup()" class="login-button-close font-english" type="button" value="close">
+                </form>
+            </div>
+        {% endblock lrform %}
+
+        <div class="listright">
+            <i class="fas fa-home"></i><a href="{{ url_for("index") }}"><li>صفحه اصلی</li></a>
+        </div>
+        <div class="logo">
+            logoman
+        </div>
+        <div class="listleft">
+            <i class="fas fa-user-alt"></i><a href="#" onclick="openloginpopup()"><li>ورود</li></a>
+            <li>/</li>
+            <i class="fas fa-user-plus"></i><a href="#" onclick="openregisterpopup()"><li>ثبت نام</li></a>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if current_user.is_authenticated %}
+        <div class="showingusername">
+            <p>{{ current_user.firstname+" "+current_user.lastname }}</p>
+        </div>
+        {% for error in nform.title.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+        {% for error in nform.date.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+        {% for error in nform.time.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+        <form method="POST" class="form-todo" action="">
+            {{ nform.hidden_tag() }}
+            <div class="form-todo-up">
+                {{ nform.title(class_="font-parastoo") }}
+                {{nform.date}}
+                {{nform.time}}
+            </div>
+            <div class="form-todo-down">
+                {{ nform.nsubmit(class_="font-parastoo") }}
+            </div>
+        </form>
+        {% if postslen != 0 %}
+
+
+            <div class="show-todo-list-active">
+
+                    <ul class="ul-todo-section">
+                        {% for post in posts.items %}
+                            <li class="todo-section">
+                                <div class="todo-section-upside">
+                                    <p class="show-todo-date">{{ post.date }}</p>
+                                    <p class="show-todo-time">{{ post.time }}</p>
+                                </div>
+                                <div class="todo-section-downside">
+                                    <div class="edit-delete-todo">
+                                        <a href="{{url_for("editpost",postid=post.id)}}"><button class="edit-button-todo font-english">edit</button></a>
+                                        <a href="{{url_for("deletepost",postid=post.id)}}"><button class="delete-button-todo font-english">delete</button></a>
+                                    </div>
+                                    <div class="todo-subject">
+                                        <h4 class="font-parastoo">{{ post.title }}</h4>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" class="checkbox-todo">
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="switch-page">
+                        <ul>
+                            {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
+                                {% if page_num %}
+                                    {% if posts.page==page_num %}
+                                        <li><a href="{{ url_for("index",page=page_num) }}"><button id="switch-page-active">{{ page_num }}</button></a></li>
+                                    {% else %}
+                                        <li><a href="{{ url_for("index",page=page_num) }}"><button>{{ page_num }}</button></a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="showingusername">
+            <p>username</p>
+        </div>
+        <form class="form-todo" action="">
+            <div class="form-todo-up">
+                <input class="font-parastoo" placeholder="عنوان" type="text">
+                <input type="date">
+                <input id="timeinput" type="time">
+            </div>
+            <div class="form-todo-down">
+                <input class="font-parastoo" value="افزودن" type="submit">
+            </div>
+        </form>
+        <div class="show-todo-list">
+            <p class="font-parastoo show-mainpage-todo-list">برای افزودن کارها <a class="font-parastoo"
+                                                                                  onclick="openloginpopup()"
+                                                                                  href="#">وارد</a> شوید</p>
+        </div>
+    {% endif %}
+{% endblock %}

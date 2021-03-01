@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block header %}
+    <div class="listright">
+        <i class="fas fa-home"></i><a href="{{ url_for("index") }}">
+        <li>صفحه اصلی</li>
+    </a>
+        <i class="fas fa-user"></i><a href="#">
+        <li>پروفایل کاربری</li>
+    </a>
+    </div>
+    <div class="listleft">
+        <i class="fas fa-sign-out-alt"></i><a href="{{url_for("logout")}}">خروج</a>
+    </div>
+{% endblock %}
+{% block content %}
+    <form method="POST" class="edit-post" action="">
+        {{ form.hidden_tag() }}
+        {{form.title}}
+        {{ form.date }}
+        {{ form.time }}
+        {{ form.submit }}
+    </form>
+{% endblock %}
