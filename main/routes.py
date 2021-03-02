@@ -144,14 +144,21 @@ def editprofile():
         return redirect(url_for("editprofile"))
 
     return render_template("account.html",form=form,title="پروفایل",sendmail=formemail)
-@app.route("/adminpanel",methods=["POST","GET"])
-def adminpanel():
+@app.route("/adminpanel/users",methods=["POST","GET"])
+def adminpanel_users():
     if current_user.isadmin==False:
         abort(403)
     page=request.args.get("page",1,int)
     users=User.query.paginate(page=page,per_page=10)
-    return render_template("admin.html",users=users,title="پنل ادمین")
-@app.route("/deleteuser/<int:userid>")
+    return render_template("admin.html",users=users,title="پنل ادمین-یوزرها")
+@app.route("/adminpanel/posts",methods=["POST","GET"])
+def adminpanel_posts():
+    if current_user.isadmin==False:
+        abort(403)
+    page=request.args.get("page",1,int)
+    posts=Post.query.paginate(page=page,per_page=10)
+    return render_template("admin.html",posts=posts,title="پنل ادمین-پست ها")
+@app.route("/adminpanel/deleteuser/<int:userid>")
 @login_required
 def deleteuser(userid):
     if current_user.isadmin==False:
@@ -161,7 +168,18 @@ def deleteuser(userid):
         db.session.delete(user)
         db.session.commit()
         flash("یوزر با موفقیت حذف شد.", category="success")
-        return redirect(url_for("adminpanel"))
+        return redirect(url_for("adminpanel_users"))
     else:
         flash("شما نمیتوانید ادمین را حذف کنید.",category="danger")
-        return redirect(url_for("adminpanel"))
+        return redirect(url_for("adminpanel_users"))
+@app.route("/adminpanel/deletepost/<int:postid>")
+@login_required
+def deletepostbyadmin(postid):
+    if current_user.isadmin==False:
+        abort(403)
+    post=Post.query.get_or_404(postid)
+    db.session.delete(post)
+    db.session.commit()
+    flash("پست با موفقیت حذف شد",category="success")
+    return redirect(url_for("adminpanel_posts"))
+

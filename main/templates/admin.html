@@ -10,46 +10,89 @@
     </div>
 {% endblock %}
 {% block content %}
-    <table class="table-admin" border="2px">
-        <thead>
-            <th>حذف</th>
-            <th>نام</th>
-            <th>نام خانوادگی</th>
-            <th>ایمیل</th>
-            <th>تعداد پست</th>
-            <th>تایید ایمیل</th>
-        </thead>
-        <tbody>
-        {% for user in users.items %}
-            <tr>
-                <td><a href="{{ url_for("deleteuser",userid=user.id) }}">
-                    <button>حذف اکانت</button>
-                </a></td>
-                <td>{{ user.firstname }}</td>
-                <td>{{ user.lastname }}</td>
-                <td>{{ user.email}}</td>
-                <td>{{ user.posts|length }}</td>
-                <td>{% if user.verify==True %}انجام شده{% else %}انجام نشده{% endif %}</td>
+    {% if "users" in request.path %}
+        <table class="table-admin" border="2px">
+            <thead>
+                <th>حذف</th>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>ایمیل</th>
+                <th>تعداد پست</th>
+                <th>تایید ایمیل</th>
+            </thead>
+            <tbody>
+            {% for user in users.items %}
+                <tr>
+                    <td><a href="{{ url_for("deleteuser",userid=user.id) }}">
+                        <button>حذف اکانت</button>
+                    </a></td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.email}}</td>
+                    <td>{{ user.posts|length }}</td>
+                    <td>{% if user.verify==True %}انجام شده{% else %}انجام نشده{% endif %}</td>
 
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div class="switch-page">
-        <ul>
-            {% for page_num in users.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
-                {% if page_num %}
-                    {% if users.page==page_num %}
-                        <li><a href="{{ url_for("adminpanel",page=page_num) }}">
-                            <button id="switch-page-active">{{ page_num }}</button>
-                        </a></li>
-                    {% else %}
-                        <li><a href="{{ url_for("adminpanel",page=page_num) }}">
-                            <button>{{ page_num }}</button>
-                        </a></li>
-                    {% endif %}
-                {% endif %}
+                </tr>
             {% endfor %}
-        </ul>
-    </div>
+            </tbody>
+        </table>
+        <div class="switch-page">
+            <ul>
+                {% for page_num in users.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
+                    {% if page_num %}
+                        {% if users.page==page_num %}
+                            <li><a href="{{ url_for("adminpanel_users",page=page_num) }}">
+                                <button id="switch-page-active">{{ page_num }}</button>
+                            </a></li>
+                        {% else %}
+                            <li><a href="{{ url_for("adminpanel_users",page=page_num) }}">
+                                <button>{{ page_num }}</button>
+                            </a></li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% elif "posts" in request.path %}
+        <table class="table-admin" border="2px">
+            <thead>
+                <th>حذف</th>
+                <th>عنوان</th>
+                <th>نام نویسنده</th>
+                <th>تاریخ</th>
+                <th>ساعت</th>
+            </thead>
+            <tbody>
+            {% for post in posts.items %}
+                <tr>
+                    <td><a href="{{url_for("deletepostbyadmin",postid=post.id)}}">
+                        <button>حذف پست</button>
+                    </a></td>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.author.firstname+" "+ post.author.lastname }}</td>
+                    <td>{{ post.date}}</td>
+                    <td>{{ post.time }}</td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="switch-page">
+            <ul>
+                {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
+                    {% if page_num %}
+                        {% if posts.page==page_num %}
+                            <li><a href="{{ url_for("adminpanel_posts",page=page_num) }}">
+                                <button id="switch-page-active">{{ page_num }}</button>
+                            </a></li>
+                        {% else %}
+                            <li><a href="{{ url_for("adminpanel_posts",page=page_num) }}">
+                                <button>{{ page_num }}</button>
+                            </a></li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock %}
