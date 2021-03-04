@@ -51,3 +51,9 @@ class edit_profile_form(FlaskForm):
 class sendmail_form(FlaskForm):
     hidden=HiddenField("nothing")
     sendemail=SubmitField(" فرستادن ایمیل تایید")
+class searchposts_form(FlaskForm):
+    search=StringField("اسم نویسنده",validators=[DataRequired("این فیلد باید پر شود")],render_kw={"placeholder":"نام خانوادگی نویسنده"})
+    submit=SubmitField("search")
+class searchusers_form(FlaskForm):
+    search=StringField("اسم نویسنده",validators=[DataRequired("این فیلد باید پر شود")],render_kw={"placeholder":"ایمیل فرد "})
+    submit=SubmitField("search")

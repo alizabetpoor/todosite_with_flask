@@ -6,6 +6,7 @@ from PIL import Image
 from flask_login import login_user,login_required,logout_user,current_user
 from flask import render_template,url_for,flash,redirect,request,abort
 from main.forms import login_form,register_form,newpost_form,edit_post_form,edit_profile_form,sendmail_form
+from main.forms import searchposts_form,searchusers_form
 def send_email(user):
     token=user.get_verify_token()
     msg=Message("email confrim",sender="alizabetpoor80@gmail.com",recipients=[user.email])
@@ -53,7 +54,7 @@ def index():
         user=User(firstname=rform.firstname.data,lastname=rform.lastname.data,email=rform.remail.data,password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        send_email(user)
+        # send_email(user)
         flash("ثبت نام شما با موفقیت انجام شد.",category="success")
         return redirect(url_for("index"))
     if current_user.is_authenticated==True:
@@ -148,16 +149,40 @@ def editprofile():
 def adminpanel_users():
     if current_user.isadmin==False:
         abort(403)
+    form=searchusers_form()
+    if form.validate_on_submit():
+        return redirect(url_for("searchuser",user=form.search.data))
+    usersearchcon=False
     page=request.args.get("page",1,int)
     users=User.query.paginate(page=page,per_page=10)
-    return render_template("admin.html",users=users,title="پنل ادمین-یوزرها")
+    return render_template("admin.html",users=users,title="پنل ادمین-یوزرها",con=usersearchcon,form=form)
+@app.route("/adminpanel/users/<string:user>")
+def searchuser(user):
+    form=searchusers_form()
+    usersearchcon=True
+    users=User.query.filter_by(email=user).paginate()
+    if len(users.items)==0:
+        abort(404)
+    return render_template("admin.html",con=usersearchcon,users=users,form=form,title=users.items[0].lastname)
 @app.route("/adminpanel/posts",methods=["POST","GET"])
 def adminpanel_posts():
     if current_user.isadmin==False:
         abort(403)
+    showuserpostscon=False
+    form = searchposts_form()
+    if form.validate_on_submit():
+        return redirect(url_for("showuserposts",userlastname=form.search.data))
     page=request.args.get("page",1,int)
     posts=Post.query.paginate(page=page,per_page=10)
-    return render_template("admin.html",posts=posts,title="پنل ادمین-پست ها")
+    return render_template("admin.html",posts=posts,title="پنل ادمین-پست ها",form=form,con=showuserpostscon)
+@app.route("/adminpanel/posts/<string:userlastname>",methods=["GET","POST"])
+def showuserposts(userlastname):
+    showuserpostscon=True
+    form=searchposts_form()
+    page=request.args.get("page",1,int)
+    user = User.query.filter_by(lastname=userlastname).first_or_404()
+    posts = Post.query.filter_by(user_id=user.id).paginate(page=page, per_page=5)
+    return render_template("admin.html",posts=posts,form=form,con=showuserpostscon,user=user,title=f" پست های {user.lastname}")
 @app.route("/adminpanel/deleteuser/<int:userid>")
 @login_required
 def deleteuser(userid):

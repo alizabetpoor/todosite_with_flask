@@ -11,6 +11,11 @@
 {% endblock %}
 {% block content %}
     {% if "users" in request.path %}
+        <form class="searchbar_post" method="POST" action="{{ url_for("adminpanel_users") }}">
+            {{ form.hidden_tag() }}
+            {{ form.search(class_="search-post") }}
+            {{ form.submit(class_="search-submit") }}
+        </form>
         <table class="table-admin" border="2px">
             <thead>
                 <th>حذف</th>
@@ -38,6 +43,7 @@
         </table>
         <div class="switch-page">
             <ul>
+                {% if con==False %}
                 {% for page_num in users.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
                     {% if page_num %}
                         {% if users.page==page_num %}
@@ -51,9 +57,15 @@
                         {% endif %}
                     {% endif %}
                 {% endfor %}
+                {% endif %}
             </ul>
         </div>
     {% elif "posts" in request.path %}
+        <form class="searchbar_post" method="POST" action="{{ url_for("adminpanel_posts") }}">
+            {{ form.hidden_tag() }}
+            {{ form.search(class_="search-post") }}
+            {{ form.submit(class_="search-submit") }}
+        </form>
         <table class="table-admin" border="2px">
             <thead>
                 <th>حذف</th>
@@ -79,6 +91,21 @@
         </table>
         <div class="switch-page">
             <ul>
+                {% if con== True %}
+                    {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
+                    {% if page_num %}
+                        {% if posts.page==page_num %}
+                            <li><a href="{{ url_for("showuserposts",userlastname=user.lastname,page=page_num) }}">
+                                <button id="switch-page-active">{{ page_num }}</button>
+                            </a></li>
+                        {% else %}
+                            <li><a href="{{ url_for("showuserposts",userlastname=user.lastname,page=page_num) }}">
+                                <button>{{ page_num }}</button>
+                            </a></li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% else %}
                 {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
                     {% if page_num %}
                         {% if posts.page==page_num %}
@@ -92,6 +119,7 @@
                         {% endif %}
                     {% endif %}
                 {% endfor %}
+                {% endif %}
             </ul>
         </div>
     {% endif %}

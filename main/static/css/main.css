@@ -597,3 +597,17 @@ body{
 .table-admin tr:hover{
 	background-color: #00abe1;
 }
+.searchbar_post{
+	display: flex;
+	font-family: parastoo;
+	margin-bottom: 10px;
+}
+.search-post{
+	border-radius: 15px;
+	background-color: #8c8e96;
+	margin-left: 10px;
+}
+.search-submit{
+	border-radius: 15px;
+	background-color: #8c8e96;
+}
